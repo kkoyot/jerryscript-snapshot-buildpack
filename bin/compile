@@ -1,0 +1,43 @@
+#!/bin/bash
+# bin/compile <build-dir> <cache-dir> <env-dir>
+
+BP_DIR=$(cd $(dirname $0); cd ..; pwd)
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+
+indent() {
+  sed -u 's/^/       /'
+}
+
+JERRY_BINARY_URL=`cat $3/JERRY_BINARY_URL`
+
+if [ -z $JERRY_BINARY_URL ]; then
+  echo -e "Missing $JERRY_BINARY_URL environment variable!"
+  exit 1
+fi
+
+cd $1
+
+echo -e 'Creating JerryScript folder' | indent
+
+export JERRY_DIR='external/bin'
+
+mkdir -p $JERRY_DIR
+
+echo -e 'Downloading JerryScript binary' | indent
+
+wget -qO $JERRY_DIR/jerry-snapshot $JERRY_BINARY_URL
+
+chmod +x $JERRY_DIR/jerry-snapshot
+
+$JERRY_DIR/jerry-snapshot
+
+if [ $? -gt 0 ]; then
+  echo -e 'There was an error running jerry-snapshot! Error code:' $?
+  exit $?
+fi
+
+echo -e 'Process done!' | indent
+
+exit 0

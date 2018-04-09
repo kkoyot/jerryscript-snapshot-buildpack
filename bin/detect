@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo -e 'Jerryscript app'
+exit 0
+
