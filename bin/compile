@@ -27,7 +27,7 @@ mkdir -p $JERRY_DIR
 
 echo -e 'Downloading JerryScript binary' | indent
 
-wget -qO $JERRY_DIR/jerry-snapshot $JERRY_BINARY_URL
+wget --timeout=5 --tries=5 -qO $JERRY_DIR/jerry-snapshot $JERRY_BINARY_URL
 
 chmod +x $JERRY_DIR/jerry-snapshot
 
